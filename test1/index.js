@@ -23,13 +23,34 @@ const expected = [
 const validate = (result) => {
   try {
     assert.deepEqual(result, expected);
+    console.info("Succeed!!!");
   } catch (e) {
     console.error("Failed", e);
   }
 };
 
-// implement code generating result
-const result = [];
+const capitalizeFirstLetter = (str) => {
+  if (!str) {
+    throw new Error('Input should not be empty')
+  }
 
-// At the end call validate
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+const splitName = (name) => {
+  const parts = name.split(" ");
+
+  const first = parts.length >= 1 ? parts[0] : null;
+  const middle = parts.length >= 3 ? parts.slice(1, parts.length - 1) : [];
+  const last = (parts.length === 2 || parts.length >= 3) ? parts[parts.length -1] : null;
+
+  return {
+    first: first ? capitalizeFirstLetter(first) : null,
+    middle: middle.map(capitalizeFirstLetter),
+    last: last ? capitalizeFirstLetter(last) : null
+  }
+}
+
+const result = names.map(splitName);
+
 validate(result);
