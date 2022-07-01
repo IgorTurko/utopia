@@ -1,4 +1,4 @@
-const assert = require("chai").assert;
+import chai from "chai";
 
 const names = [
   "Michael Daniel Jäger",
@@ -22,7 +22,7 @@ const expected = [
 
 const validate = (result) => {
   try {
-    assert.deepEqual(result, expected);
+    chai.assert.deepEqual(result, expected);
     console.info("Succeed!!!");
   } catch (e) {
     console.error("Failed", e);
