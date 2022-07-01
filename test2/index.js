@@ -1,4 +1,4 @@
-const assert = require("chai").assert;
+import chai, { use } from "chai";
 
 const database = (() => {
   const _database = {
@@ -15,7 +15,7 @@ const database = (() => {
       }, 300);
     });
 
-  const listUserIDs = () => Promise.resolve([621, 123, 251, 631]);
+  const listUserIDs = async () => [621, 123, 251, 631];
 
   return { getUser, listUserIDs };
 })();
@@ -31,7 +31,7 @@ const expected = [
     ],
   },
   {
-    id: 350,
+    id: 123,
     name: "FriendNo1",
     friends: [
       { id: 621, name: "XxDragonSlayerxX", friends: [123, 251, 631] },
@@ -56,14 +56,31 @@ const expected = [
 
 const validate = (result) => {
   try {
-    assert.deepEqual(result, expected);
+    chai.assert.deepEqual(result, expected);
+    console.info('Succeed!!!')
   } catch (e) {
     console.error("Failed", e);
   }
 };
 
-// implement a method to create this result
-const result = [];
+const getUsersByIds = async (ids) => {
+  const users = await Promise.all(ids.map(id => database.getUser(id)));
 
-// At the end call validate
+  return (users || []).filter(Boolean);
+}
+
+const userIds = await database.listUserIDs() || [];
+const users = await getUsersByIds(userIds);
+const result = await Promise.all(
+  users.map(async user => {
+    const { friends: friendIds } = user;
+    const friends = await getUsersByIds(friendIds);
+  
+    return {
+      ...user,
+      friends: friends
+    };
+  })
+);
+
 validate(result);
