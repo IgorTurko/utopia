@@ -13,3 +13,8 @@ Fetch users and populate all of their friends
 ## Case 3
 
 Validate if two knights in a game of chess can attack each other based on their position.
+
+# How to run tests
+All cases were solved with nodejs version 14. So before runing tests make sure that you are in the right version. You can set it using `nvm` for example by running `nvm use 14`.
+
+After that call each test seperatly: `node ./test1`, `node ./test2`, `node ./test3`
